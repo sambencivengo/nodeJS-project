@@ -2,20 +2,21 @@ const express = require('express');
 const app = express();
 const tasks = require('./routes/tasks');
 const connectDB = require('./db/connect');
+const notFound = require('./middleware/not-found');
+const errorHandlerMiddleware = require('./middleware/error-handler');
 require('dotenv').config();
+
 //middleware
 app.use(express.static('./public'));
 app.use(express.json());
 
 //routes
-
 app.use('/api/v1/tasks', tasks);
 
-// app.get('/api/v1/tasks');
-// app.post('/api/v1/tasks');
-// app.get('/api/v1/tasks/:id');
-// app.patch('/api/v1/tasks/:id');
-// app.delete('/api/v1/tasks/:id');
+// custom 404
+app.use(notFound);
+// custom 500
+app.use(errorHandlerMiddleware);
 
 const port = 3000;
 
